@@ -1,0 +1,64 @@
+# Ignora los archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignora los archivos de configuración específicos de IDEs o editores
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignora los archivos de dependencias y carpetas generadas
+node_modules/
+vendor/
+
+# Ignora archivos de registro y caché
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.sqlite
+
+# Ignora archivos de construcción y distribución
+/build/
+/dist/
+
+# Ignora archivos de configuración de entorno
+.env
+.env.local
+.env.*.local
+
+# Ignora archivos de caché de imágenes y subidas
+*.cache
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# Ignora archivos generados automáticamente
+*.generated.js
+
+# Ignora archivos de respaldo
+*~
+*.bak
+
+# Ignora archivos de salida de compilación o lenguajes específicos
+*.o
+*.out
+*.class
+*.bin
+
+# Ignora archivos de usuario específicos
+config/user-config.json
+
+# Ignora archivos de credenciales
+secrets.json
+
+# Ignora archivos de registro
+log/*.log
+
+# Ignora archivos de almacenamiento local de desarrollo
+.localstorage
+
+# Ignora archivos temporales
