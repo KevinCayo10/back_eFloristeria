@@ -1,22 +1,17 @@
-import { getConnection } from "../database/database";
-
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const getProductos = async (req, res) => {
   try {
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT pro.id_pro, pro.desc_pro, pro.pre_pro, pro.img_pro, cate.categoria FROM productos as pro, categorias as cate  WHERE pro.id_cate_pro = cate.id_cate"
-    );
+    const listProducts = await prisma.productos.findMany({
+      include: {
+        categorias: true,
+      },
+    });
 
+    console.log("Productos : ", listProducts);
     // Mapea los resultados para obtener un arreglo de productos
-    const productos = result.map((row) => ({
-      id_pro: row.id_pro,
-      desc_pro: row.desc_pro,
-      pre_pro: row.pre_pro,
-      img_pro: row.img_pro,
-      categoria: row.categoria,
-    }));
 
-    return res.status(200).json(productos);
+    return res.status(200).json(listProducts);
   } catch (error) {
     console.log(error);
     return res.status(500).send(error.message);
@@ -25,38 +20,39 @@ const getProductos = async (req, res) => {
 
 const getProducto = async (req, res) => {
   try {
-    const connection = await getConnection();
     const id = req.params.id;
-    console.log(id);
-    const result = await connection.query(
-      "SELECT pro.id_pro, pro.desc_pro, pro.pre_pro,pro.img_pro, cate.categoria FROM productos as pro, categorias as cate  WHERE  pro.id_pro = ? and pro.id_cate_pro = cate.id_cate ",
-      [id]
-    );
-    if (result.length == 0) {
+    console.log("ID : ", id);
+    const product = await prisma.productos.findFirst({
+      where: {
+        id_pro: parseInt(id),
+      },
+      include: {
+        categorias: true,
+      },
+    });
+    console.log("product: ", product);
+    if (product.length === 0) {
       return res.status(400).jsn({ message: "Producto no encontrado" });
     }
-
-    res.status(200).json(result);
+    return res.status(200).json(product);
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error });
+    return res.status(400).json({ error });
   }
 };
 
 const guardarProducto = async (req, res) => {
   try {
     const producto = req.body;
-    const connection = await getConnection();
-    const result = await connection.query(
-      "INSERT INTO productos (id_pro, desc_pro, pre_pro,img_pro, id_cate_pro ) VALUES (?,?,?,?,?)",
-      [
-        producto.id_pro,
-        producto.desc_pro,
-        producto.pre_pro,
-        producto.img_pro,
-        producto.id_cate_pro,
-      ]
-    );
+    const resp = await prisma.productos.create({
+      data: {
+        id_pro: producto.id_pro,
+        desc_pro: producto.desc_pro,
+        pre_pro: producto.pre_pro,
+        img_pro: producto.img_pro,
+        id_cate_pro: producto.id_cate_pro,
+      },
+    });
     return res.status(201).json({ message: "Guardado exitoso" });
   } catch (error) {
     console.log(error);
@@ -66,10 +62,15 @@ const guardarProducto = async (req, res) => {
 
 const getOrderTimeProduct = async (req, res) => {
   try {
-    const connection = await getConnection();
-    const result = await connection.query(
-      "SELECT pro.id_pro, pro.desc_pro, pro.pre_pro, pro.img_pro, cate.categoria FROM productos AS pro JOIN categorias AS cate ON pro.id_cate_pro = cate.id_cate ORDER BY pro.created_time DESC LIMIT 4"
-    );
+    const result = await prisma.productos.findMany({
+      include: {
+        categorias: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 4,
+    });
     return res.status(200).json(result);
   } catch (error) {
     console.log(error);

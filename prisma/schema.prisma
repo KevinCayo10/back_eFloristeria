@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Usuarios{
+  id_usu Int @id @default(autoincrement())
+  ced_usu String?  @unique @db.VarChar(13)
+  nom_usu String @db.VarChar(20)
+  ape_usu String @db.VarChar(20)
+  celu_usu String @db.VarChar(15)
+  email_usu String @unique @db.VarChar(50)
+  pass_usu String @db.VarChar(255)
+    createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Productos {
+  id_pro     Int       @id @default(autoincrement())
+  desc_pro   String    @db.VarChar(300)
+  prec_pro   Decimal   @db.Decimal(10,2)
+  img_pro    String    @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  id_cate_pro Int
+  categorias Categorias @relation(fields: [id_cate_pro], references: [id_cate])
+}
+
+model Categorias{
+  id_cate Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nom_cate String @db.VarChar(50)
+  img_cate String @db.VarChar(255)
+  productos Productos []
+}
+
+model Facturas{
+  num_fac Int @id @default(autoincrement())
+  id_usu Int  @db.Int
+    est_fac Int  @db.TinyInt
+  total_fac Decimal @db.Decimal(10,2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Detalle_factura{
+  id_det Int @id @default(autoincrement())
+  num_fac Int @db.Int
+  id_prod Int @db.Int
+  cant_det Int @db.Int
+  prec_det Decimal @db.Decimal(10,2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
