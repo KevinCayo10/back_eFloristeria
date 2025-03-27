@@ -1,16 +1,17 @@
-import Bcrypt from "../utils/bcrypt";
-import Jwt from "../utils/jwt";
+import Bcrypt from "../../utils/bcrypt";
+import Jwt from "../../utils/jwt";
 import { PrismaClient } from "@prisma/client";
-import Validate from "../utils/validate";
+import Validate from "../../utils/validate";
 const prisma = new PrismaClient();
 
-class AuthController {
+class UsuarioController {
   constructor() {
     this.bcrypInstance = new Bcrypt();
     this.jwtInstance = new Jwt();
     this.validate = new Validate();
     this.register = this.register.bind(this); // Enlazar el método register
     this.login = this.login.bind(this); // Enlazar el método register
+    this.getUsers = this.getUsers.bind(this); // Enlazar el método register
   }
   async register(req, res) {
     try {
@@ -103,6 +104,41 @@ class AuthController {
       });
     }
   }
+
+  async getUsers(req, res) {
+    try {
+      const cookie = req.cookies.access_token;
+      console.log("COOKIE : ", cookie);
+      if (!cookie) {
+        return res.status(401).json({
+          status: 401,
+          message: "No autorizado",
+        });
+      }
+      const data = await this.jwtInstance.verifyToken(cookie);
+      if (!data) {
+        return res.status(401).json({
+          status: 401,
+          message: "No autorizado",
+        });
+      }
+      const user = await prisma.usuarios.findFirst({
+        where: {
+          id_usu: data,
+        },
+      });
+      console.log("USER : ", user);
+      return res.status(200).json({
+        status: 200,
+        message: "Usuarios encontrados",
+        data: {
+          user: user,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
-export default AuthController;
+export { UsuarioController };

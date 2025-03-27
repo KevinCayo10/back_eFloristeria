@@ -11,6 +11,4 @@ const getCategorias = async (req, res) => {
   }
 };
 
-export const methods = {
-  getCategorias,
-};
+export { getCategorias };

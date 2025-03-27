@@ -14,7 +14,8 @@ class Jwt {
 
   async verifyToken(token) {
     const decoded = await this.jwt.verify(token, this.key);
-    return decoded.userId;
+    console.log("DECODED : ", decoded.id_usu);
+    return decoded.id_usu;
   }
 }
 

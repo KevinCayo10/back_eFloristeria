@@ -77,9 +77,5 @@ const getOrderTimeProduct = async (req, res) => {
     return res.status(500).send(error.message);
   }
 };
-export const methods = {
-  getProductos,
-  getProducto,
-  getOrderTimeProduct,
-  guardarProducto,
-};
+
+export { getProductos, getProducto, guardarProducto, getOrderTimeProduct };
