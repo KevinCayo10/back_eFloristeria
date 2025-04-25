@@ -9,6 +9,7 @@ class ServerApp {
     this.port = process.env.PORT || 3001;
     this.hostname = process.env.HOSTNAME || "localhost";
     this.initializeMiddlewares();
+    this.initializeRoutes();
   }
 
   initializeMiddlewares() {
