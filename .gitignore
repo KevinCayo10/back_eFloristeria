@@ -62,3 +62,6 @@ log/*.log
 .localstorage
 
 # Ignora archivos temporales
+
+
+prisma/migrations

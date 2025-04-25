@@ -14,56 +14,159 @@ datasource db {
 }
 
 
-model Usuarios{
-  id_usu Int @id @default(autoincrement())
-  ced_usu String?  @unique @db.VarChar(13)
-  nom_usu String @db.VarChar(20)
-  ape_usu String @db.VarChar(20)
-  celu_usu String @db.VarChar(15)
-  email_usu String @unique @db.VarChar(50)
-  pass_usu String @db.VarChar(255)
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-    rol_usu String @db.VarChar(20)
+model detalle_cotizacion {
+  id_det             Int              @id @default(autoincrement())
+  cant_pro          Int
+  valor_uni_pro     Decimal          @db.Decimal(10, 2)
+  desc_pro          Decimal          @db.Decimal(10, 2)
+  iva_pro           Decimal          @db.Decimal(10, 2)
+  valor_iva_pro     Decimal          @db.Decimal(10, 2)
+  subtotal_pro      Decimal          @db.Decimal(10, 2)
+  vu_final_pro      Decimal          @db.Decimal(10, 2)
+  total_sin_sub_pro Decimal          @db.Decimal(10, 2)
 
+  id_pro_det        Int
+  productos         productos        @relation(fields: [id_pro_det], references: [id_pro])
+
+  id_mae_det        Int
+  cotizacionMaesto  cotizacionMaesto @relation(fields: [id_mae_det], references: [id_mae])
 }
 
-model Productos {
-  id_pro     Int       @id @default(autoincrement())
-  desc_pro   String    @db.VarChar(300)
-  prec_pro   Decimal   @db.Decimal(10,2)
-  img_pro    String    @db.VarChar(255)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+model cotizacionMaesto {
+  id_mae           Int               @id @default(autoincrement())
+  fecha_mae        DateTime
+  fecha_emi_mae    DateTime
+  fecha_venc_mae   DateTime
+  serie_mae        String            @db.VarChar(100)
+  secuencial_mae   String            @db.VarChar(5)
+  baseIva0_mae     Decimal           @db.Decimal(10, 2)
+  baseIva_mae      Decimal           @db.Decimal(10, 2)
+  baseNoIva_mae    Decimal           @db.Decimal(10, 2)
+  descuento_mae    Decimal           @db.Decimal(10, 2)
+  subtotal_mae     Decimal           @db.Decimal(10, 2)
+  valorIva_mae     Decimal           @db.Decimal(10, 2)
+  total_mae        Decimal           @db.Decimal(10, 2)
+
+  id_usu_mae       Int
+  usuarios         usuarios          @relation(fields: [id_usu_mae], references: [id_usu])
+
+  id_cli_mae       Int
+  clientes         clientes          @relation(fields: [id_cli_mae], references: [id_cli])
+
+  id_emp_mae       Int
+  empresas         empresas          @relation(fields: [id_emp_mae], references: [id_emp])
+
+  id_comp_mae      Int
+  comprobantes     comprobantes      @relation(fields: [id_comp_mae], references: [id_comp])
+
+  id_forpa_mae     Int
+  formasPago       formasPago        @relation(fields: [id_forpa_mae], references: [id_forpa])
+
+  detalle_cotizacion detalle_cotizacion[]
+}
+
+model comprobantes {
+  id_comp             Int       @id @default(autoincrement())
+  identificador_comp  String    @db.VarChar(5)
+  codigo_comp         String    @db.VarChar(5)
+  nom_comp            String    @db.VarChar(20)
+  tributario_comp     Int
+  natura_compra_comp  String    @db.VarChar(1)
+  natura_venta_comp   String    @db.VarChar(1)
+  contabiliza_comp    Int
+  importacion_comp    Int
+  signo_comp          String    @db.VarChar(1)
+
+  id_emp_comp         Int
+  empresas            empresas  @relation(fields: [id_emp_comp], references: [id_emp])
+
+  cotizacionMaesto    cotizacionMaesto[]
+}
+
+model usuarios {
+  id_usu    Int       @id @default(autoincrement())
+  nom_usu   String    @db.VarChar(20)
+  email_usu String    @unique @db.VarChar(100) // <-- AÑADIDO
+  pass_usu  String    @db.VarChar(100)
+  rol_usu   String    @db.VarChar(20)
+
+  cotizacionMaesto cotizacionMaesto[]
+}
+
+model productos {
+  id_pro      Int       @id @default(autoincrement())
+  nom_pro     String    @db.VarChar(255)
+  img_pro     String    @db.VarChar(255)
+  desc_pro    String    @db.VarChar(255)
+  precio_pro  Decimal   @db.Decimal(10, 2)
+  precio2_pro Decimal   @db.Decimal(10, 2)
+  precio3_pro Decimal   @db.Decimal(10, 2)
+  fecha_pro   DateTime
+
   id_cate_pro Int
-  categorias Categorias @relation(fields: [id_cate_pro], references: [id_cate])
+  id_imp_pro    Int
+
+  categorias  categorias @relation(fields: [id_cate_pro], references: [id_cate])
+  impuesto      impuestos  @relation(fields: [id_imp_pro], references: [id_imp])
+
+
+  detalle_cotizacion detalle_cotizacion[]
 }
 
-model Categorias{
-  id_cate Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  nom_cate String @db.VarChar(50)
-  img_cate String @db.VarChar(255)
-  productos Productos []
+model impuestos {
+  id_imp        Int         @id @default(autoincrement())
+  nombre_imp    String
+  porcentaje_imp Int
+  codigo_imp    Int
+
+  productos productos[] 
 }
 
-model Facturas{
-  num_fac Int @id @default(autoincrement())
-  id_usu Int  @db.Int
-    est_fac Int  @db.TinyInt
-  total_fac Decimal @db.Decimal(10,2)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model categorias {
+  id_cate   Int        @id @default(autoincrement())
+  categoria String     @db.VarChar(20)
+
+  productos productos[]
 }
 
-model Detalle_factura{
-  id_det Int @id @default(autoincrement())
-  num_fac Int @db.Int
-  id_prod Int @db.Int
-  cant_det Int @db.Int
-  prec_det Decimal @db.Decimal(10,2)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model clientes {
+  id_cli         Int     @id @default(autoincrement())
+  tipoDoc_cli    String  @db.VarChar(20)
+  ced_cli        String  @db.VarChar(15)
+  nom_cli        String  @db.VarChar(50)
+  ape_cli        String  @db.VarChar(50)
+  dir_cli        String  @db.VarChar(255)
+  ciu_cli        String  @db.VarChar(100)
+  telf_cli       String  @db.VarChar(10)
+  telf_code_cli  String  @db.VarChar(10)
+
+  cotizacionMaesto cotizacionMaesto[]
 }
+
+model empresas {
+  id_emp              Int       @id @default(autoincrement())
+  ruc_emp             String    @db.VarChar(13)
+  razon_social_emp    String    @db.VarChar(255)
+  url_logo_emp        String    @db.VarChar(255)
+  dueno_emp           String    @db.VarChar(100)
+  agente_retencion_emp String  @db.VarChar(100)
+  iva_emp             Int
+  telf_emp            String    @db.VarChar(13)
+  dir_emp            String    @db.VarChar(255)
+  ciu_emp            String    @db.VarChar(100)
+  telf_code_emp      String    @db.VarChar(10)
+
+  cotizacionMaesto    cotizacionMaesto[]
+  comprobantes        comprobantes[]
+}
+
+model formasPago {
+  id_forpa         Int                @id @default(autoincrement())
+  predifinido_forpa Int
+  codigo_sri_forpa String             @db.VarChar(5)
+  tipo_forpa       String             @db.VarChar(5)
+
+  cotizacionMaesto cotizacionMaesto[]
+}
+
 
