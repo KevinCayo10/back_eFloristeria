@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import MyError from "../../utils/error";
-
+import MyError from "../../utils/error.js";
+import prisma from "../../config/prisma.js"
 export const getClientesSvc = async () => {
-  const prisma = new PrismaClient()
+
   try {
     const dataClient = await prisma.clientes.findMany()
     const clientes = dataClient.map(data => ({
@@ -20,13 +19,11 @@ export const getClientesSvc = async () => {
     return clientes;
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const getClienteSvc = async ({ id }) => {
-  const prisma = new PrismaClient()
+
   try {
     const dataClient = await prisma.clientes.findUnique({
       where: {
@@ -52,15 +49,13 @@ export const getClienteSvc = async ({ id }) => {
     return cliente
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const createClienteSvc = async ({
   ruc, nombre, apellido, direccion, ciudad, telefono, codigoTelf
 }) => {
-  const prisma = new PrismaClient()
+
   try {
     const existByRuc = await prisma.clientes.findUnique({
       where: {
@@ -85,15 +80,13 @@ export const createClienteSvc = async ({
     return response
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const updateClienteSvc = async ({
   id, ruc, nombre, apellido, direccion, ciudad, telefono, codigoTelf
 }) => {
-  const prisma = new PrismaClient()
+
   try {
 
     const dataCliente = await prisma.clientes.findUnique({
@@ -123,13 +116,10 @@ export const updateClienteSvc = async ({
 
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const deleteClienteSvc = async ({ id }) => {
-  const prisma = new PrismaClient()
   try {
     const dataCliente = await prisma.clientes.findUnique({
       where: {
@@ -148,7 +138,5 @@ export const deleteClienteSvc = async ({ id }) => {
     return response
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }

@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import MyError from "../../utils/error";
+import prisma from "../../config/prisma";
 
 
 export const getEmpresaInfoSvc = async ({ id }) => {
-  const prisma = new PrismaClient()
+
   try {
 
     const empresaInfo = await prisma.empresas.findUnique({
@@ -24,9 +25,7 @@ export const getEmpresaInfoSvc = async ({ id }) => {
       ciudad: empresaInfo.ciu_emp,
       telefono: empresaInfo.telf_emp,
       codigoTelf: empresaInfo.telf_code_emp,
-
     }
-
     return empresa
   } catch (error) {
     throw new MyError(error.message, error.status);
@@ -48,7 +47,7 @@ export const updateEmpresaInfoSvc = async ({
   direccion,
   ciudad
 }) => {
-  const prisma = new PrismaClient()
+
   try {
     const existEmpresa = await prisma.empresas.findUnique({
       where: {

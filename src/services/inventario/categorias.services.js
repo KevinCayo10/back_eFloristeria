@@ -1,9 +1,8 @@
 "use strict"
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../config/prisma";
 import MyError from "../../utils/error";
 
 export const getCategoriasSvc = async () => {
-  const prisma = new PrismaClient()
   try {
     const dataCategorias = await prisma.categorias.findMany()
 
@@ -15,13 +14,10 @@ export const getCategoriasSvc = async () => {
     return categorias
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const getCategoriaSvc = async ({ id }) => {
-  const prisma = new PrismaClient()
   try {
     const dataCategoria = await prisma.categorias.findUnique({
       where: {
@@ -37,15 +33,12 @@ export const getCategoriaSvc = async ({ id }) => {
     return categoria
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const createCategoriaSvc = async ({
   categoria
 }) => {
-  const prisma = new PrismaClient()
   try {
     const existCategoria = await prisma.categorias.findFirst({
       where: {
@@ -69,15 +62,12 @@ export const createCategoriaSvc = async ({
     return categoriaCreada
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const updateCategoriaSvc = async ({
   id, categoria
 }) => {
-  const prisma = new PrismaClient()
   try {
     const existCategoria = await prisma.categorias.findFirst({
       where: {
@@ -116,15 +106,12 @@ export const updateCategoriaSvc = async ({
     return categoriaActualizada
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const deleteCategoriaSvc = async ({
   id
 }) => {
-  const prisma = new PrismaClient()
   try {
     const existCategoria = await prisma.categorias.findFirst({
       where: {
@@ -150,7 +137,5 @@ export const deleteCategoriaSvc = async ({
     return categoriaEliminada
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }

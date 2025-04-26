@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import MyError from "../../utils/error.js";
 import { hashed } from "../../utils/auth/bcrypt.js";
+import prisma from "../../config/prisma.js"
 
-const prisma = new PrismaClient();
 
 const getUsersSvc = async () => {
   try {
@@ -115,17 +114,5 @@ const updateUserSvc = async (
   }
 };
 
-const verifyEmail = async (email) => {
-  try {
-    const user = await prisma.usuarios.findFirst({
-      where: {
-        email_usu: email,
-      },
-    });
-    return user;
-  } catch (error) {
-    throw new MyError(error.message, "Error al actualizar el usuario", error.statusCode);
-  }
-};
 
 export { getUsersSvc, getUserSvc, createUserSvc, updateUserSvc };

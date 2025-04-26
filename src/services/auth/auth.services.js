@@ -2,7 +2,7 @@ import { verify } from "../../utils/auth/bcrypt.js";
 import { generateToken } from "../../utils/auth/jwt.js";
 import { PrismaClient } from "@prisma/client";
 import MyError from "../../utils/error.js";
-const prisma = new PrismaClient();
+import prisma from "../../config/prisma.js";
 export const loginSvc = async (email, contrasenia) => {
   try {
     const dataUser = await prisma.usuarios.findUnique({

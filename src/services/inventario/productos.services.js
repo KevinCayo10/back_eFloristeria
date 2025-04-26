@@ -1,8 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import MyError from "../../utils/error";
-
+import prisma from "../../config/prisma.js"
 export const getProductosSvc = async () => {
-  const prisma = new PrismaClient()
   try {
     const dataProductos = await prisma.productos.findMany({
       include: {
@@ -20,13 +19,11 @@ export const getProductosSvc = async () => {
     return productos
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const getProductoSvc = async ({ id }) => {
-  const prisma = new PrismaClient()
+
   try {
     const dataProductos = await prisma.productos.findUnique({
       where: {
@@ -53,8 +50,6 @@ export const getProductoSvc = async ({ id }) => {
     return producto
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
@@ -67,7 +62,7 @@ export const createProductoSvc = async ({
   id_categoria,
   id_impuesto,
 }) => {
-  const prisma = new PrismaClient()
+
   try {
     const existProducto = await prisma.productos.findFirst({
       where: {
@@ -108,8 +103,6 @@ export const createProductoSvc = async ({
     return productoCreado
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
@@ -123,7 +116,7 @@ export const updateProductoSvc = async ({
   id_categoria,
   id_impuesto,
 }) => {
-  const prisma = new PrismaClient()
+
   try {
     const existProducto = await prisma.productos.findFirst({
       where: {
@@ -167,13 +160,11 @@ export const updateProductoSvc = async ({
     return productoActualizado
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
 
 export const deleteProductoSvc = async ({ id }) => {
-  const prisma = new PrismaClient()
+
   try {
     const existProducto = await prisma.productos.findFirst({
       where: {
@@ -197,7 +188,5 @@ export const deleteProductoSvc = async ({ id }) => {
     return productoEliminado
   } catch (error) {
     throw new MyError(error.message, error.status);
-  } finally {
-    prisma.$disconnect()
   }
 }
