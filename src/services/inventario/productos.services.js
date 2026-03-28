@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import MyError from "../../utils/error";
+import MyError from "../../utils/error.js";
 import prisma from "../../config/prisma.js"
 export const getProductosSvc = async () => {
   try {

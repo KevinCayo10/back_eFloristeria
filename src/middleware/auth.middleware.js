@@ -1,5 +1,5 @@
-import { verifyToken } from "../utils/auth/jwt";
-import MyError from "../utils/error";
+import { verifyToken } from "../utils/auth/jwt.js";
+import MyError from "../utils/error.js";
 
 export const verifyBearerToken = (req, res, next) => {
   try {

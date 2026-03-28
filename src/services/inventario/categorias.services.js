@@ -1,6 +1,6 @@
 "use strict"
-import prisma from "../../config/prisma";
-import MyError from "../../utils/error";
+import prisma from "../../config/prisma.js";
+import MyError from "../../utils/error.js";
 
 export const getCategoriasSvc = async () => {
   try {

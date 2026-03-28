@@ -1,5 +1,5 @@
-import { createProductoSvc, deleteProductoSvc, getProductosSvc, getProductoSvc, updateProductoSvc } from "../../services/inventario/productos.services";
-import MyError from "../../utils/error";
+import { createProductoSvc, deleteProductoSvc, getProductosSvc, getProductoSvc, updateProductoSvc } from "../../services/inventario/productos.services.js";
+import MyError from "../../utils/error.js";
 
 export const getProductos = async (req, res, next) => {
   try {

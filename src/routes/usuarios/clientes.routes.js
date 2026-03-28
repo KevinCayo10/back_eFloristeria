@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { verifyBearerToken } from "../../middleware/auth.middleware";
-import { createCliente, deleteCliente, getCliente, getClientes, updateCliente } from "../../controllers/usuarios/cliente.controller";
+import { verifyBearerToken } from "../../middleware/auth.middleware.js";
+import { createCliente, deleteCliente, getCliente, getClientes, updateCliente } from "../../controllers/usuarios/cliente.controller.js";
 
 const routerCliente = Router()
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getEmpresaInfo, updateEmpresaInfo } from "../../controllers/empresa/empresa.controller";
-import { verifyBearerToken } from "../../middleware/auth.middleware";
+import { getEmpresaInfo, updateEmpresaInfo } from "../../controllers/empresa/empresa.controller.js";
+import { verifyBearerToken } from "../../middleware/auth.middleware.js";
 
 const routerEmpresa = Router()
 

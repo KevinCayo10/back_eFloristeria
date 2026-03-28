@@ -65,3 +65,5 @@ log/*.log
 
 
 prisma/migrations
+
+mysql_data

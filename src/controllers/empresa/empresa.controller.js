@@ -1,5 +1,5 @@
-import { getEmpresaInfoSvc, updateEmpresaInfoSvc } from "../../services/empresa/empresa.services";
-import MyError from "../../utils/error";
+import { getEmpresaInfoSvc, updateEmpresaInfoSvc } from "../../services/empresa/empresa.services.js";
+import MyError from "../../utils/error.js";
 
 
 export const getEmpresaInfo = async (req, res, next) => {

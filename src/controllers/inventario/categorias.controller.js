@@ -1,6 +1,6 @@
 
-import { createCategoriaSvc, deleteCategoriaSvc, getCategoriasSvc, getCategoriaSvc, updateCategoriaSvc } from "../../services/inventario/categorias.services";
-import MyError from "../../utils/error";
+import { createCategoriaSvc, deleteCategoriaSvc, getCategoriasSvc, getCategoriaSvc, updateCategoriaSvc } from "../../services/inventario/categorias.services.js";
+import MyError from "../../utils/error.js";
 export const getCategorias = async (req, res, next) => {
   try {
     const categorias = await getCategoriasSvc()

@@ -1,5 +1,5 @@
-import { createClienteSvc, deleteClienteSvc, getClientesSvc, getClienteSvc, updateClienteSvc } from "../../services/usuarios/cliente.services";
-import MyError from "../../utils/error";
+import { createClienteSvc, deleteClienteSvc, getClientesSvc, getClienteSvc, updateClienteSvc } from "../../services/usuarios/cliente.services.js";
+import MyError from "../../utils/error.js";
 
 
 export const getCliente = async (req, res, next) => {

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import MyError from "../../utils/error";
-import prisma from "../../config/prisma";
+import MyError from "../../utils/error.js";
+import prisma from "../../config/prisma.js";
 
 
 export const getEmpresaInfoSvc = async ({ id }) => {
